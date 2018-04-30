@@ -24,7 +24,7 @@ public class myDBClass extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `foodTable` (\n" +
-                "\t`fid`\tINTEGER NOT NULL,\n" +
+                "\t`fid`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
                 "\t`food_img`\tTEXT NOT NULL,\n" +
                 "\t`food_name`\tTEXT NOT NULL,\n" +
                 "\t`food_type`\tTEXT NOT NULL,\n" +
@@ -57,9 +57,7 @@ public class myDBClass extends SQLiteOpenHelper {
                 if (cursor.moveToFirst()) {
                     do {
                         map = new HashMap<String, String>();
-                        //arrData = new String[cursor.getColumnCount()];
                         for (int i = 0; i < cursor.getColumnCount(); i++) {
-                            //arrData[i] = cursor.getString(i);
                             map.put(cursor.getColumnName(i), cursor.getString(i));
                         }
                         MyArrList.add(map);
@@ -68,10 +66,49 @@ public class myDBClass extends SQLiteOpenHelper {
             }
             cursor.close();
             db.close();
-            //Log.d("MYLOG", "Selected List: " + MyArrList);
+            Log.d(TAG, "SelectData: " + MyArrList);
             return MyArrList;
 
         } catch (Exception e) {
+            Log.d(TAG, "Exception: " + e);
+            return null;
+        }
+    }
+
+    // Select Data
+    public ArrayList<HashMap<String, String>> SelectRandom(String tableName) {
+        // TODO Auto-generated method stub
+
+        try {
+            //String arrData[] = null;
+            ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+            HashMap<String, String> map;
+
+            SQLiteDatabase db;
+            db = this.getReadableDatabase(); // Read Data
+
+            /*Cursor cursor = db.query("opt_type", new String[]{"*"}, null,
+                    new String[]{String.valueOf(strMemberID)}, null, null, null, null);*/
+            String strSQL = "SELECT * FROM " + tableName + " ORDER BY RANDOM() LIMIT 1";
+            Cursor cursor = db.rawQuery(strSQL, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        map = new HashMap<String, String>();
+                        for (int i = 0; i < cursor.getColumnCount(); i++) {
+                            map.put(cursor.getColumnName(i), cursor.getString(i));
+                        }
+                        MyArrList.add(map);
+                    } while (cursor.moveToNext());
+                }
+            }
+            cursor.close();
+            db.close();
+            Log.d(TAG, "SelectData: " + MyArrList);
+            return MyArrList;
+
+        } catch (Exception e) {
+            Log.d(TAG, "Exception: " + e);
             return null;
         }
     }
