@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RandomActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btnRandom;
+    ImageButton btnRandom;
     ImageView ivFood;
     TextView tvFood;
 
